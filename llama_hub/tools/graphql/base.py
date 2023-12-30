@@ -15,13 +15,13 @@ class GraphQLToolSpec(BaseToolSpec):
         self.headers = headers
         self.url = url
 
-    def graphql_request(self, query: str, variables: str, operation_name: str):
+    def graphql_request(self, query: str, variables: dict, operation_name: str):
         """
         Use this tool to make a GraphQL query against the server.
 
         Args:
             query (str): The GraphQL query to execute
-            variables (str): The variable values for the query
+            variables (dict): The variable values for the query
             operation_name (str): The name for the query
 
         example input:
@@ -30,6 +30,11 @@ class GraphQLToolSpec(BaseToolSpec):
             "operation_name":"Ships"
 
         """
+
+        # if the given parameter 'variables' is a string, convert to dict
+        if isinstance(variables, str):
+            variables = eval(variables)
+            
         res = requests.post(
             self.url,
             headers=self.headers,
